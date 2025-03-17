@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskr-app
+  labels:
+    app: flaskr-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flaskr-app
+  template:
+    metadata:
+      labels:
+        app: flaskr-app
+    spec:
+      containers:
+      - name: flaskr-app
+        image: ashutosh04/blogapp:latest
+        ports:
+        - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: NodePort
+  selector:
+    app: flaskr-app
+  ports:
+    - port: 5000
+      # By default and for convenience, the `targetPort` is set to
+      # the same value as the `port` field.
+      targetPort: 5000
+      # Optional field
+      # By default and for convenience, the Kubernetes control plane
+      # will allocate a port from a range (default: 30000-32767)
+      nodePort: 30007
