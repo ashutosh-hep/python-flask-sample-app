@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flaskr-app
-        image: ashutosh04/blogapp:latest
+        image: ashutosh04/blogapp:<IMAGE_TAG>
         ports:
         - containerPort: 5000
 
