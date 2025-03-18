@@ -1,0 +1,61 @@
+@Library('test') _ 
+
+pipeline {
+    agent any
+    environment {
+        // Referencing the secret by its ID (e.g., MY_SECRET_KEY)
+        MY_SECRET_KEY = credentials('MY_SECRET_KEY')
+        MY_SECRET_USER = credentials('MY_SECRET_USER')
+    }
+    stages {
+        stage("start"){
+            steps{
+                deleteDir()
+            }
+        }
+        stage("clone repo"){
+            steps{
+                sh "git clone https://github.com/ashutosh-hep/python-flask-sample-app.git"
+            }
+        }
+        stage("build"){
+            steps{
+                dir("python-flask-sample-app"){
+                    sh """
+                    sudo docker build . -t flaskr
+                    """
+                }
+            }
+        }
+        stage("push to artifactory"){
+            steps{
+                dir("python-flask-sample-app"){
+                    script {
+                    // Call the function from the shared library
+                    dockerhubAuth(env.MY_SECRET_KEY,env.MY_SECRET_USER)   
+                }
+                    sh """
+                    sudo docker images
+                    sudo docker tag flaskr ashutosh04/blogapp:0.${env.BUILD_NUMBER}
+                    sudo docker push ashutosh04/blogapp:0.${env.BUILD_NUMBER}
+                    sudo docker rmi ashutosh04/blogapp:0.${env.BUILD_NUMBER}
+                    sudo docker rmi flaskr
+                    """
+                }
+            }
+        }
+        stage ('deploy') {
+            steps {
+                build job: 'application-deploy', parameters: [
+                string(name: 'imageTag', value: "0.${env.BUILD_NUMBER}")
+                ]
+            }
+        }
+
+    }
+    post {
+        always {
+            cleanWs() // Clean workspace after build
+            }
+        }
+}
