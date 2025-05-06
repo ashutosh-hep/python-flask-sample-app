@@ -3,4 +3,4 @@ description: "authenticates to docker hub"
 runs:
   using: "composite"
   steps:
-    - run: echo "${{ secrets.user }}" | sudo docker login -u "${{ secrets.accesstoken }}" --password-stdin
+    - run: echo "${{ secrets.USERNAME }}" | sudo docker login -u "${{ secrets.ACCESSTOKEN }}" --password-stdin
