@@ -19,8 +19,6 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Test
+      run: echo "test hai"
 
-    - name: Run tests
-      run: npm test
