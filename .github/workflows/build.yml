@@ -30,7 +30,7 @@ jobs:
 
       - name: Push to artifactory
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin \
+          echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin \
           && sudo docker images \
           && sudo docker tag flaskr ashutosh04/blogapp:0.${{ github.run_number }} \
           && sudo docker push ashutosh04/blogapp:0.${{ github.run_number }} \
