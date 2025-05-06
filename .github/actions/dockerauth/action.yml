@@ -1,5 +1,10 @@
 name: "Docker hub auth"
 description: "authenticates to docker hub"
+inputs:
+  USERNAME:
+    required: true
+  ACCESSTOKEN:
+    required: true
 runs:
   using: "composite"
   steps:
