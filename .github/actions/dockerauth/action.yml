@@ -8,5 +8,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "${{ inputs.ACCESSTOKEN }}" | sudo docker login -u "${{ inputs.USERNAME }}"  --password-stdin
+    - name: Docker login
+      run: |
+        echo "${{ inputs.ACCESSTOKEN }}" | docker login -u "${{ inputs.USERNAME }}" --password-stdin
       shell: bash
