@@ -10,5 +10,5 @@ runs:
   steps:
     - name: Docker login
       run: |
-        echo "${{ inputs.ACCESSTOKEN }}" | docker login -u "${{ inputs.USERNAME }}" --password-stdin
+        echo "${{ inputs.ACCESSTOKEN }}" | sudo docker login -u "${{ inputs.USERNAME }}" --password-stdin
       shell: bash
