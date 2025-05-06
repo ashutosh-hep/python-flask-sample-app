@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ git-test ]
+    branches: [ git-test3 ]
   pull_request:
-    branches: [ git-test ]
+    branches: [ git-test3 ]
 
 jobs:
   build:
