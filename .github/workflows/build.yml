@@ -26,3 +26,12 @@ jobs:
         with:
           USERNAME: ${{ secrets.USERNAME }}
           ACCESSTOKEN: ${{ secrets.ACCESSTOKEN }}
+
+
+      - name: Push to artifactory
+        run: |
+          sudo docker images \
+          && sudo docker tag flaskr ashutosh04/blogapp:0.${{ github.run_number }} \
+          && sudo docker push ashutosh04/blogapp:0.${{ github.run_number }} \
+          && sudo docker rmi ashutosh04/blogapp:0.${{ github.run_number }} \
+          && sudo docker rmi flaskr
