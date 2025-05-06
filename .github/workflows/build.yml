@@ -16,4 +16,4 @@ jobs:
         run: sudo docker build . -t flaskr
         
       - name: Auth with with docker
-        run: ./.github/actions/dockerauth/action.yml
+        run: ./.github/actions/dockerauth
