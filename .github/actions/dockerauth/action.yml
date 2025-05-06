@@ -9,3 +9,4 @@ runs:
   using: "composite"
   steps:
     - run: echo "${{ secrets.USERNAME }}" | sudo docker login -u "${{ secrets.ACCESSTOKEN }}" --password-stdin
+      shell: bash
