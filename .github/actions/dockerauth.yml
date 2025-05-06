@@ -1,6 +1,0 @@
-name: "Docker hub auth"
-description: "authenticates to docker hub"
-runs:
-  using: "composite"
-  steps:
-    - run: echo "${{ secrets.user }}" | docker login -u "${{ secrets.accesstoken }}" --password-stdin
