@@ -1,0 +1,16 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: [ git-test ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: sudo docker build . -t flaskr
