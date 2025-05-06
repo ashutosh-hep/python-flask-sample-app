@@ -17,3 +17,6 @@ jobs:
         
       - name: Auth with with docker
         uses: ./.github/actions/dockerauth
+        with:
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.ACCESSTOKEN }}
