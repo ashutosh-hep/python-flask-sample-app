@@ -1,0 +1,50 @@
+@Library('test') _ 
+
+pipeline {
+    agent any
+    parameters {
+        string(defaultValue: "latest", description: "Which environment to deploy in?", name: "imageTag")
+    }
+    environment {
+        // Referencing the secret by its ID (e.g., MY_SECRET_KEY)
+        MY_SECRET_KEY = credentials('MY_SECRET_KEY')
+        MY_SECRET_USER = credentials('MY_SECRET_USER')
+        IMG_TAG = "latest"
+    }
+    stages {
+        stage("start"){
+            steps{
+                deleteDir()
+            }
+        }
+        stage("clone repo"){
+            steps{
+                sh "git clone https://github.com/ashutosh-hep/python-flask-sample-app.git"
+            }
+        }
+        stage("deploy"){
+            steps{
+                dir("python-flask-sample-app"){
+                    sh """
+                    sudo apt-get update
+                    sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin -y
+                    sudo gcloud auth activate-service-account jenkins-k8s@trans-setup-453913-g4.iam.gserviceaccount.com --key-file=/home/ashuk04here/key.json
+                    
+                    sudo gcloud auth list
+                    sudo gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project trans-setup-453913-g4 
+                    sed -i "s/<IMAGE_TAG>/${params.imageTag}/" app-deploy.yaml
+                    sudo kubectl apply -f app-deploy.yaml
+                    """
+                }
+            }
+        }
+        
+
+    }
+    post {
+        always {
+            cleanWs() // Clean workspace after build
+            }
+        }
+}
+
