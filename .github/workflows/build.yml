@@ -14,3 +14,6 @@ jobs:
 
       - name: Build Docker image
         run: sudo docker build . -t flaskr
+        
+      - name: Auth with with docker
+        run: ./.github/actions/dockerauth
